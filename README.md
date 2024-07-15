@@ -25,9 +25,9 @@ sure you add the submodules when you checkout the source.
 $ git clone --recurse-submodules https://github.com/Symbitic/tree-sitter-cmake
 $ mkdir tree-sitter-cmake/build
 $ cd tree-sitter-cmake/build
-$ cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release ..
+$ cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release ..
 $ cmake --build .
-$ sudo cmake --build . --target install
+$ cmake --build . --target install
 ```
 
 The above commands should check out the git submodules this project pulls in.
