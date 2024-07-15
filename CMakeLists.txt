@@ -40,7 +40,7 @@ function(add_language lang)
   else()
     set(src_dir "${ARGN}")
   endif()
-  add_library(Tree-Sitter-${lang} STATIC "${CMAKE_CURRENT_BINARY_DIR}/${src_dir}/src/parser.c")
+  add_library(Tree-Sitter-${lang} STATIC "${CMAKE_CURRENT_BINARY_DIR}/${src_dir}/src/parser.c" "${CMAKE_CURRENT_BINARY_DIR}/${src_dir}/src/scanner.c")
   # Make aliases the same as exported lib names. Useful when embedding.
   add_library(Tree-Sitter::Tree-Sitter-${lang} ALIAS Tree-Sitter-${lang})
   target_include_directories(Tree-Sitter-${lang}
@@ -51,27 +51,27 @@ function(add_language lang)
   )
 endfunction()
 
-checkout(tree-sitter v0.20.1)
-checkout(tree-sitter-c v0.20.1)
-checkout(tree-sitter-c-sharp v0.19.1)
-checkout(tree-sitter-cpp v0.20.0)
-checkout(tree-sitter-go rust-0.19.1)
-checkout(tree-sitter-java v0.19.1)
-checkout(tree-sitter-javascript rust-0.20.0)
-checkout(tree-sitter-python rust-0.19.1)
-checkout(tree-sitter-rust v0.20.0)
-checkout(tree-sitter-typescript rust-0.20.0)
+checkout(tree-sitter v0.22.6)
+checkout(tree-sitter-c v0.21.4)
+#checkout(tree-sitter-c-sharp v0.19.1)
+checkout(tree-sitter-cpp v0.22.2)
+#checkout(tree-sitter-go rust-0.19.1)
+#checkout(tree-sitter-java v0.19.1)
+#checkout(tree-sitter-javascript rust-0.20.0)
+#checkout(tree-sitter-python rust-0.19.1)
+#checkout(tree-sitter-rust v0.20.0)
+#checkout(tree-sitter-typescript rust-0.20.0)
 
-add_language(C)
-add_language(C-Sharp)
+#add_language(C)
+#add_language(C-Sharp)
 add_language(CPP)
-add_language(Go)
-add_language(Java)
-add_language(JavaScript)
-add_language(Python)
-add_language(Rust)
-add_language(TypeScript tree-sitter-typescript/typescript)
-add_language(TSX tree-sitter-typescript/tsx)
+#add_language(Go)
+#add_language(Java)
+#add_language(JavaScript)
+#add_language(Python)
+#add_language(Rust)
+#add_language(TypeScript tree-sitter-typescript/typescript)
+#add_language(TSX tree-sitter-typescript/tsx)
 
 add_library(Tree-Sitter "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter/lib/src/lib.c")
 
@@ -95,7 +95,7 @@ if(NOT SUBPROJECT)
 
   install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/tree-sitter/lib/include/tree_sitter/api.h
-    ${CMAKE_CURRENT_BINARY_DIR}/tree-sitter/lib/include/tree_sitter/parser.h
+    #${CMAKE_CURRENT_BINARY_DIR}/tree-sitter/lib/include/tree_sitter/parser.h
     include/tree_sitter/langs.h
     DESTINATION include/tree_sitter
   )
@@ -108,7 +108,8 @@ if(NOT SUBPROJECT)
     FILE Tree-Sitter-targets.cmake
   )
 
-  foreach(lang C C-Sharp CPP Go Java JavaScript Python Rust TypeScript TSX)
+#  foreach(lang C C-Sharp CPP Go Java JavaScript Python Rust TypeScript TSX)
+  foreach(lang CPP)
     install(TARGETS Tree-Sitter-${lang} EXPORT ${lang} DESTINATION lib)
     install(EXPORT ${lang}
       DESTINATION ${CMAKE_INSTALL_DIR}
