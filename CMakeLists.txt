@@ -33,6 +33,22 @@ function(CHECKOUT proj tag)
   endif()
 endfunction()
 
+function(CHECKOUT_F90 proj tag)
+  if (NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${proj}")
+    message(STATUS "Cloning ${proj} ${tag}")
+    execute_process(
+      COMMAND git clone https://github.com/stadelmanma/${proj}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      RESULT_VARIABLE ret
+      OUTPUT_QUIET
+      ERROR_QUIET
+    )
+    if (NOT ret EQUAL 0)
+      message(ERROR "Error cloning ${proj}")
+    endif()
+  endif()
+endfunction()
+
 function(add_language lang)
   string(TOLOWER "${lang}" lang_str)
   if (NOT ARGN)
@@ -55,6 +71,7 @@ checkout(tree-sitter v0.22.6)
 checkout(tree-sitter-c v0.21.4)
 #checkout(tree-sitter-c-sharp v0.19.1)
 checkout(tree-sitter-cpp v0.22.2)
+checkout_f90(tree-sitter-fortran v0.22.2)
 #checkout(tree-sitter-go rust-0.19.1)
 #checkout(tree-sitter-java v0.19.1)
 #checkout(tree-sitter-javascript rust-0.20.0)
@@ -65,6 +82,7 @@ checkout(tree-sitter-cpp v0.22.2)
 #add_language(C)
 #add_language(C-Sharp)
 add_language(CPP)
+add_language(Fortran)
 #add_language(Go)
 #add_language(Java)
 #add_language(JavaScript)
@@ -109,7 +127,7 @@ if(NOT SUBPROJECT)
   )
 
 #  foreach(lang C C-Sharp CPP Go Java JavaScript Python Rust TypeScript TSX)
-  foreach(lang CPP)
+  foreach(lang CPP Fortran)
     install(TARGETS Tree-Sitter-${lang} EXPORT ${lang} DESTINATION lib)
     install(EXPORT ${lang}
       DESTINATION ${CMAKE_INSTALL_DIR}
